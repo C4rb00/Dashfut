@@ -107,6 +107,9 @@ def index():
         plot_results=plot_results,
         plot_goals=plot_goals
     )
-
+    
 if __name__ == "__main__":
     app.run(debug=True)
+
+server = app
+
