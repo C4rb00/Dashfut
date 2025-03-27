@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 # URLs para datasets
 url_matches = 'https://raw.githubusercontent.com/daramireh/simonBolivarCienciaDatos/refs/heads/main/matches_1991_2023.csv'
-
+paleta = ["#4A148C", "#6A1B9A", "#8E24AA", "#AB47BC", "#CE93D8"]
 # Cargar datos desde URL
 df = pd.read_csv(url_matches)
 
@@ -44,9 +44,9 @@ def graph_special_stats(team):
     ).astype(str).apply(lambda x: 0 if x=='nan' or x=='' else len(x.split(','))).sum()
     
     fig = go.Figure(data=[
-        go.Bar(name='Tarjetas Rojas', x=['Tarjetas'], y=[red_cards_count], marker_color='crimson'),
-        go.Bar(name='Sustituciones', x=['Sustituciones'], y=[subs_count], marker_color='orange'),
-        go.Bar(name='Autogoles', x=['Autogoles'], y=[og_count], marker_color='gray')
+        go.Bar(name='Tarjetas Rojas', x=['Tarjetas'], y=[red_cards_count], marker_color=paleta[0]),
+        go.Bar(name='Sustituciones', x=['Sustituciones'], y=[subs_count], marker_color=paleta[1]),
+        go.Bar(name='Autogoles', x=['Autogoles'], y=[og_count], marker_color=paleta[2])
     ])
     fig.update_layout(title=f'Estadísticas Especiales para {team}', yaxis_title='Cantidad', barmode='group')
     return pio.to_html(fig, full_html=False)
@@ -57,9 +57,9 @@ def graph_attendance_evolution(team):
     att = df_team.groupby('Year')['Attendance'].agg(['mean','sum']).reset_index()
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=att['Year'], y=att['mean'], mode='lines+markers',
-                             name='Asistencia Promedio', line=dict(color='blue')))
+                             name='Asistencia Promedio', line=dict(color=paleta[1])))
     fig.add_trace(go.Scatter(x=att['Year'], y=att['sum'], mode='lines+markers',
-                             name='Asistencia Total', line=dict(color='green')))
+                             name='Asistencia Total', line=dict(color=paleta[2])))
     fig.update_layout(title=f'Evolución de Asistencia para {team}', xaxis_title='Año', yaxis_title='Asistencia')
     return pio.to_html(fig, full_html=False)
 
@@ -83,8 +83,8 @@ def graph_goals_comparison(team):
     goals_for = df_team.apply(lambda row: row['home_score'] if row['home_team']==team else row['away_score'], axis=1).sum()
     goals_against = df_team.apply(lambda row: row['away_score'] if row['home_team']==team else row['home_score'], axis=1).sum()
     fig = go.Figure(data=[
-        go.Bar(name='Goles a Favor', x=[team], y=[goals_for], marker_color='teal'),
-        go.Bar(name='Goles en Contra', x=[team], y=[goals_against], marker_color='salmon')
+        go.Bar(name='Goles a Favor', x=[team], y=[goals_for], marker_color=paleta[0]),
+        go.Bar(name='Goles en Contra', x=[team], y=[goals_against], marker_color=paleta[1])
     ])
     fig.update_layout(title=f'Goles a Favor vs Goles en Contra para {team}', barmode='group', yaxis_title='Total de Goles')
     return pio.to_html(fig, full_html=False)
