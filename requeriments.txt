@@ -1,0 +1,8 @@
+Flask
+pandas
+plotly
+gunicorn
+dash
+pandas
+plotly
+gunicorn
