@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Copa Mundial Femenina</title>
+    <!-- Plotly JS -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+<body class="container" style="margin-top: 20px;">
+
+    <h1 class="mb-4">Dashboard Copa Mundial Femenina</h1>
+
+    <!-- Formulario de selección del equipo -->
+    <form method="POST" action="/">
+        <div class="form-group">
+            <label for="team">Selecciona un equipo:</label>
+            <select name="team" id="team" class="form-control">
+                {% for t in teams %}
+                    <option value="{{ t }}" {% if t == team %}selected{% endif %}>{{ t }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Actualizar</button>
+    </form>
+
+    <hr>
+
+    <!-- Gráfico 1: Estadísticas especiales -->
+    <h3>1. Estadísticas Especiales</h3>
+    <div>
+        {{ plot_special | safe }}
+    </div>
+
+    <hr>
+
+    <!-- Gráfico 2: Evolución de Asistencia -->
+    <h3>2. Evolución de Asistencia</h3>
+    <div>
+        {{ plot_attendance | safe }}
+    </div>
+
+    <hr>
+
+    <!-- Gráfico 3: Distribución de Resultados -->
+    <h3>3. Distribución de Resultados</h3>
+    <div>
+        {{ plot_results | safe }}
+    </div>
+
+    <hr>
+
+    <!-- Gráfico 4: Goles a Favor vs Goles en Contra -->
+    <h3>4. Goles a Favor vs Goles en Contra</h3>
+    <div>
+        {{ plot_goals | safe }}
+    </div>
+
+</body>
+</html>
